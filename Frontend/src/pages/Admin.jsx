@@ -78,6 +78,8 @@ const Admin = () => {
         });
       }
 
+      //here if any lottery is closed then just fetch the event logs and get the winners data 
+
       setLotteries(lotteriesList.reverse());
     } catch (err) {
       console.error("Error fetching lotteries:", err);
