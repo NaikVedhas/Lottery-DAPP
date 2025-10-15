@@ -97,9 +97,9 @@ contract LotteryDapp {
         require(ticketsArray.length >= 3, "Not enough tickets sold");
 
         // Random winner indices
-        uint256 rand1 = uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty, ticketsArray.length))) % ticketsArray.length;
+        uint256 rand1 = uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao, ticketsArray.length))) % ticketsArray.length;
         uint256 rand2 = uint256(keccak256(abi.encodePacked(rand1, block.timestamp))) % ticketsArray.length;
-        uint256 rand3 = uint256(keccak256(abi.encodePacked(rand2, block.difficulty))) % ticketsArray.length;
+        uint256 rand3 = uint256(keccak256(abi.encodePacked(rand2, block.prevrandao))) % ticketsArray.length;
 
         // Pick winners
         address winner1 = ticketsArray[rand1];

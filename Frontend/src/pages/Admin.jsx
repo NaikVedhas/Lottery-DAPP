@@ -13,7 +13,6 @@ const Admin = () => {
   const [lotteries, setLotteries] = useState([]);
   const [loadingLotteries, setLoadingLotteries] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [selectedLotteryId, setSelectedLotteryId] = useState(null);
   const [closingLotteryId, setClosingLotteryId] = useState(null);
   const { address, isConnected } = useAccount();
 
@@ -65,6 +64,7 @@ const Admin = () => {
 
       for (let i = 1; i < Number(eventCounter); i++) {
         const lotteryInfo = await contract.getLotteryInfo(i);
+        const tickets = await contract.getTickets(i);
         lotteriesList.push({
           id: Number(lotteryInfo.id),
           ticketPrice: lotteryInfo.ticketPrice.toString(),
@@ -74,6 +74,7 @@ const Admin = () => {
           winner1: lotteryInfo.winner1,
           winner2: lotteryInfo.winner2,
           winner3: lotteryInfo.winner3,
+          tickets: tickets,
         });
       }
 
@@ -190,9 +191,25 @@ const Admin = () => {
   };
 
   const handleCloseLottery = (lotteryId) => {
+    
+    // Find the lottery object by ID
+  const lottery = lotteries.find((l) => l.id === lotteryId);
+
+  if (!lottery) {
+    toast.error("Lottery not found");
+    return;
+  }
+
+  // Check if there are at least 3 tickets sold
+  if (lottery.tickets.length < 3) {
+    toast.error("Not enough tickets sold to close the lottery");
+    return;
+  }
+    
+    
     toast(
       (t) => (
-        <div className="p-4 flex flex-col gap-4 items-center">
+        <div className="p-1 flex flex-col gap-2 items-center">
           <p className="text-gray-800 text-sm text-center">
             Are you sure you want to close this lottery and declare winners?
           </p>
@@ -381,7 +398,7 @@ const Admin = () => {
                   key={lottery?.id}
                   className="px-6 py-5 hover:bg-gray-50 transition-colors duration-200"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                     {/* Lottery Info */}
                     <div>
                       <p className="text-sm text-gray-500 font-medium">
@@ -391,6 +408,7 @@ const Admin = () => {
                         #{lottery?.id}
                       </p>
                     </div>
+
                     <div>
                       <p className="text-sm text-gray-500 font-medium">
                         Ticket Price
@@ -399,12 +417,23 @@ const Admin = () => {
                         {formatEthAmount(lottery?.ticketPrice)} ETH
                       </p>
                     </div>
+
                     <div>
                       <p className="text-sm text-gray-500 font-medium">
                         Total Pool
                       </p>
                       <p className="text-lg font-semibold text-green-600">
                         {formatEthAmount(lottery?.totalPool)} ETH
+                      </p>
+                    </div>
+
+                    {/* 🎟️ Tickets Sold */}
+                    <div>
+                      <p className="text-sm text-gray-500 font-medium">
+                        Tickets Sold
+                      </p>
+                      <p className="text-lg font-semibold text-purple-600">
+                        {lottery?.tickets?.length ?? 0}
                       </p>
                     </div>
                   </div>
