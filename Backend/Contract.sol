@@ -42,8 +42,7 @@ contract LotteryDapp {
         address winner2,
         string winner2Name,
         address winner3,
-        string winner3Name,
-        uint256 totalPool
+        string winner3Name
     );
 
     // ---------------- Constructor ----------------
@@ -140,8 +139,7 @@ contract LotteryDapp {
             winner2,
             userNames[winner2],
             winner3,
-            userNames[winner3],
-            l.totalPool
+            userNames[winner3]
         );
     }
 
