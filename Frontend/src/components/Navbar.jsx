@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { HandCoins, HandCoinsIcon, UserIcon } from "lucide-react";
+import { HandCoins,  UserIcon } from "lucide-react";
 import { IoWalletOutline } from "react-icons/io5";
 
 const NavItem = ({ to, Icon, label, iconSize = 20 }) => {
@@ -28,17 +28,12 @@ const NavItem = ({ to, Icon, label, iconSize = 20 }) => {
 const Navbar = () => {
   return (
     <nav className="bg-white/95 shadow-md py-3 px-4 md:px-8 flex items-center justify-between sticky top-0 z-40">
-      {/* Left links */}
-      
-
-      {/* Center Logo */}
       <div className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight px-2">
         <NavLink to="/" className="inline-flex items-center gap-1">
           ETH<span className="text-gray-700">Lottery</span>
         </NavLink>
       </div>
 
-      {/* Right links + connect */}
       <div className="flex items-center space-x-2 md:space-x-6">
         <ul className="flex items-center space-x-2 md:space-x-6 text-gray-700">
           <NavItem
